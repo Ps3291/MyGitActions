@@ -1,21 +1,17 @@
-name: cpp-linter
+name: Super-Linter
 
-on: pull_request
+on: push
 
 jobs:
-  cpp-linter:
+  super-lint:
+    name: Lint code base
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: cpp-linter/cpp-linter-action@v2
-        id: linter
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          style: file
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-      - name: Fail fast?!
-        if: steps.linter.outputs.checks-failed > 0
-        run: echo "Some files failed the linting checks!"
-        # for actual deployment
-        # run: exit 1
+      - name: Run Super-Linter
+        uses: github/super-linter@v4
+        env:
+          DEFAULT_BRANCH: main
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
