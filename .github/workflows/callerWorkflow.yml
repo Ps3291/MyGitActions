@@ -6,7 +6,7 @@ jobs:
   
   steps:
    - name: Trigger automated test in another repo
-     uses: peter-evans/repository-dispatch@v2
+     uses: actions/checkout@v2
      with:
       token: ${{ secrets.REPO_ACCESS_TOKEN }}
       repository: Ps3291/Hello-World-Python
