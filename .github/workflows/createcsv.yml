@@ -2,6 +2,16 @@ name: Create CSV File
 
 on:
   workflow_dispatch:
+    inputs:
+      value_1:
+        description: 'Value 1'
+        required: true
+      value_2:
+        description: 'Value 2'
+        required: true
+      value_3:
+        description: 'Value 3'
+        required: true
 
 jobs:
   build:
@@ -13,9 +23,9 @@ jobs:
 
       - name: Set up environment variables
         run: |
-          echo "VALUE_1=1" >> $GITHUB_ENV
-          echo "VALUE_2=2" >> $GITHUB_ENV
-          echo "VALUE_3=3" >> $GITHUB_ENV
+          echo "VALUE_1=${{ github.event.inputs.value_1 }}" >> $GITHUB_ENV
+          echo "VALUE_2=${{ github.event.inputs.value_2 }}" >> $GITHUB_ENV
+          echo "VALUE_3=${{ github.event.inputs.value_3 }}" >> $GITHUB_ENV
           # Add more environment variables as needed
 
       - name: Create CSV file
