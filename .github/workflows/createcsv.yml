@@ -19,7 +19,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v2.5.1
 
       - name: Set up environment variables
         run: |
@@ -38,3 +38,9 @@ jobs:
 
       - name: Display CSV content
         run: cat data.csv
+
+      - name: Archive CSV file
+        uses: actions/upload-artifact@v2
+        with:
+          name: csv-artifact
+          path: data.csv
