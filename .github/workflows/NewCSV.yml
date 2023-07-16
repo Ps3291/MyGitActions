@@ -1,0 +1,49 @@
+name: Create CSV File
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Prompt for input
+        id: input
+        run: |
+          read -p 'Enter Value 1: ' value1
+          echo "::set-output name=value_1::$(echo $value1 | tr '[:upper:]' '[:lower:]' | tr ' ' '-')"
+
+          read -p 'Enter Value 2 (numbers only): ' value2
+          if ! [[ $value2 =~ ^[0-9]+$ ]]; then
+            echo "Invalid input. Value 2 must be numeric."
+            exit 1
+          fi
+          echo "::set-output name=value_2::$value2"
+
+          read -p 'Enter Value 3 (multiple values separated by pipe): ' value3
+          echo "::set-output name=value_3::$value3"
+
+      - name: Set up environment variables
+        run: |
+          echo "VALUE_1=${{ steps.input.outputs.value_1 }}" >> $GITHUB_ENV
+          echo "VALUE_2=${{ steps.input.outputs.value_2 }}" >> $GITHUB_ENV
+          echo "VALUE_3=${{ steps.input.outputs.value_3 }}" >> $GITHUB_ENV
+          # Add more environment variables as needed
+
+      - name: Create CSV file
+        run: |
+          echo "Column1,Column2,Column3" > data.csv
+          IFS='|' read -ra VALUES <<< "$VALUE_3"
+          for value in "${VALUES[@]}"; do
+            echo "$VALUE_1,$VALUE_2,$value" >> data.csv
+          done
+
+      - name: Display CSV content
+        run: cat data.csv
+
+      - name: Archive CSV file
+        uses: actions/upload-artifact@v2
+        with:
+          name: csv-artifact
+          path: data.csv
