@@ -7,10 +7,10 @@ on:
         description: 'Value 1'
         required: true
       value_2:
-        description: 'Value 2'
+        description: 'Value 2 (multiple values separated by pipe)'
         required: true
       value_3:
-        description: 'Value 3'
+        description: 'Value 3 (numbers only)'
         required: true
 
 jobs:
@@ -18,23 +18,32 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
       - name: Set up environment variables
         run: |
-          echo "VALUE_1=${{ github.event.inputs.value_1 }}" >> $GITHUB_ENV
-          echo "VALUE_2=${{ github.event.inputs.value_2 }}" >> $GITHUB_ENV
-          echo "VALUE_3=${{ github.event.inputs.value_3 }}" >> $GITHUB_ENV
-          # Add more environment variables as needed
+          value1=$(echo "${{ github.event.inputs.value_1 }}" | tr '[:upper:]' '[:lower:]' | sed 's/ /-/g')
+          echo "VALUE_1=$value1" >> $GITHUB_ENV
+
+          value2="${{ github.event.inputs.value_2 }}"
+          if [[ ! $value2 =~ ^[^|]+(\|[^|]+)*$ ]]; then
+            echo "Invalid input. Value 2 must be in pipe-delimited format."
+            exit 1
+          fi
+          echo "VALUE_2=$value2" >> $GITHUB_ENV
+
+          value3=${{ github.event.inputs.value_3 }}
+          if ! [[ $value3 =~ ^[0-9]+$ ]]; then
+            echo "Invalid input. Value 3 must be numeric."
+            exit 1
+          fi
+          echo "VALUE_3=$value3" >> $GITHUB_ENV
 
       - name: Create CSV file
         run: |
           # Bash script to generate the CSV file
-          echo "Column1,Column2,Column3,Column4,Column5,Column6,Column7,Column8,Column9,Column10" > data.csv
-          echo "$VALUE_1,$VALUE_2,$VALUE_3,Value4,Value5,Value6,Value7,Value8,Value9,Value10" >> data.csv
-          echo "Another1,Another2,Another3,Another4,Another5,Another6,Another7,Another8,Another9,Another10" >> data.csv
-          echo "Row3Col1,Row3Col2,Row3Col3,Row3Col4,Row3Col5,Row3Col6,Row3Col7,Row3Col8,Row3Col9,Row3Col10" >> data.csv
+          echo "Column1,Column2,Column3" > data.csv
+          echo "$VALUE_1,$VALUE_2,$VALUE_3" >> data.csv
+          echo "$VALUE_1,$VALUE_2,$VALUE_3" >> data.csv
+          echo "$VALUE_1,$VALUE_2,$VALUE_3" >> data.csv
 
       - name: Display CSV content
         run: cat data.csv
