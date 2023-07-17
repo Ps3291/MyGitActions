@@ -6,9 +6,6 @@ on:
       value_1:
         description: 'Value 1'
         required: true
-      value_11:
-        description: 'Value 11'
-        required: true
       value_2:
         description: 'Value 2 (multiple values separated by pipe)'
         required: true
@@ -46,9 +43,9 @@ jobs:
         run: |
           # Bash script to generate the CSV file
           echo "Column1,Column2,Column3,Column4" > data.csv
-          echo "$VALUE_1,$VALUE_2,$VALUE_3,$Value_11" >> data.csv
-          echo "$VALUE_1,$VALUE_2,$VALUE_3,$Value_11" >> data.csv
-          echo "$VALUE_1,$VALUE_2,$VALUE_3,$Value_11" >> data.csv
+          echo "$VALUE_1,$VALUE_2,$VALUE_3,$value_11" >> data.csv
+          echo "$VALUE_1,$VALUE_2,$VALUE_3,$value_11" >> data.csv
+          echo "$VALUE_1,$VALUE_2,$VALUE_3,$value_11" >> data.csv
 
       - name: Display CSV content
         run: cat data.csv
