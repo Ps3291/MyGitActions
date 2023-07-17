@@ -6,6 +6,9 @@ on:
       value_1:
         description: 'Value 1'
         required: true
+      value_11:
+        description: 'Value 11'
+        required: true
       value_2:
         description: 'Value 2 (multiple values separated by pipe)'
         required: true
@@ -22,6 +25,8 @@ jobs:
         run: |
           value1=$(echo "${{ github.event.inputs.value_1 }}" | tr '[:upper:]' '[:lower:]' | sed 's/ /-/g')
           echo "VALUE_1=$value1" >> $GITHUB_ENV
+          
+          echo "value_11=${{ github.event.inputs.value_1 }}" >> $GITHUB_ENV
 
           value2="${{ github.event.inputs.value_2 }}"
           if [[ ! $value2 =~ ^[^|]+(\|[^|]+)*$ ]]; then
@@ -40,10 +45,10 @@ jobs:
       - name: Create CSV file
         run: |
           # Bash script to generate the CSV file
-          echo "Column1,Column2,Column3" > data.csv
-          echo "$VALUE_1,$VALUE_2,$VALUE_3" >> data.csv
-          echo "$VALUE_1,$VALUE_2,$VALUE_3" >> data.csv
-          echo "$VALUE_1,$VALUE_2,$VALUE_3" >> data.csv
+          echo "Column1,Column2,Column3,Column4" > data.csv
+          echo "$VALUE_1,$VALUE_2,$VALUE_3,$Value_11" >> data.csv
+          echo "$VALUE_1,$VALUE_2,$VALUE_3,$Value_11" >> data.csv
+          echo "$VALUE_1,$VALUE_2,$VALUE_3,$Value_11" >> data.csv
 
       - name: Display CSV content
         run: cat data.csv
