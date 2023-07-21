@@ -54,7 +54,7 @@ jobs:
         run: |
          echo "|Name|Input|" >> $GITHUB_STEP_SUMMARY
          echo "|-|-|" >> $GITHUB_STEP_SUMMARY
-         echo "|**Value**|\`${{value_2}}\`|" >> $GITHUB_STEP_SUMMARY
+         echo "|**Value**|\`${{inputs.value_2}}\`|" >> $GITHUB_STEP_SUMMARY
 
       - name: Archive CSV file
         uses: actions/upload-artifact@v2
