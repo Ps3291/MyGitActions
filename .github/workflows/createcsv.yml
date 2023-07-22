@@ -55,7 +55,7 @@ jobs:
          # input_value_2=$(echo "${{ github.event.inputs.value_2 }}" | sed 's/|/\\|/g')
          echo "|Name|Input|" >> $GITHUB_STEP_SUMMARY
          echo "|-|-|" >> $GITHUB_STEP_SUMMARY
-         echo "|**Value**|\`$input_value_2 | sed 's/|/\\|/g' \`|" >> $GITHUB_STEP_SUMMARY
+         echo "|**Value**|\`$(echo "${{ github.event.inputs.value_2 }}" | sed 's/|/\\|/g')\`|" >> $GITHUB_STEP_SUMMARY
 
 
 
