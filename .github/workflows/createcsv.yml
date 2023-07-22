@@ -52,7 +52,7 @@ jobs:
         
       - name: Adding Markdown
         run: |
-         input_value_2=$(echo "${{ github.event.inputs.value_2 }}" | sed "s/|/'\|'/g")
+         input_value_2=$(echo "${{ github.event.inputs.value_2 }}" | sed 's/|/\\|/g'")
          echo "|Name|Input|" >> $GITHUB_STEP_SUMMARY
          echo "|-|-|" >> $GITHUB_STEP_SUMMARY
          echo "|**Value**|\`$input_value_2\`|" >> $GITHUB_STEP_SUMMARY
